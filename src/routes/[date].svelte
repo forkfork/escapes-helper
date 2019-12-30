@@ -1,9 +1,10 @@
 <script context="module">
 	export async function preload({ params, query }) {
-		const res = await this.fetch(`http://127.0.0.1:3000/api/offer-assist/${params.date}`);
+	  console.log("fetching", `http://127.0.0.1:3000/api/offer-assist/${params.date}?near=${query.near}`);
+		const res = await this.fetch(`http://127.0.0.1:3000/api/offer-assist/${params.date}?near=${query.near}`);
 		const data = await res.json();
 
-		console.log(params);
+		console.log(query);
 
 		if (res.status === 200) {
 			return { d: data, date: params.date };
@@ -54,11 +55,10 @@
 	</button>
 </SvelteCalendar>
 
-
 <div class='content'>
 	<table>
 		<tr>
-			<th>
+			<th style="width: 20em;">
 				Name
 			</th>
 			<th>
@@ -67,8 +67,11 @@
 			<th>
 				Nights
 			</th>
-			<th>
+			<th style="width: 20em;">
 				Location
+			</th>
+			<th>
+				Capacity
 			</th>
 		</tr>
 		{#each d.result as r, i}
@@ -76,7 +79,8 @@
 			<td>
 				<a href="https://luxuryescapes.com/au/offer/{r.slug}/{r.id_salesforce_external}">
 					{r.name}
-				</a>
+				</a><br>
+				{r.id_salesforce_external}
 			</td>
 			<td>
 				{r.price_incl_surcharge}
@@ -88,6 +92,9 @@
 			</td>
 			<td>
 				{r.location}
+			</td>
+			<td>
+				{@html r.capacities.join("<br>")}
 			</td>
 		</tr>
 		{/each}
