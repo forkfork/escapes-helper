@@ -21,8 +21,6 @@
   import dayjs from 'dayjs';
   let formattedSelected;
   let dateChosen;
-	//formattedSelected = .date;
-  console.log(formattedSelected, date);
   $: if (dateChosen && formattedSelected) { document.location = "/" + formattedSelected };
 </script>
 
@@ -47,6 +45,8 @@
 <h1>Escapes Helper</h1>
 
 <SvelteCalendar
+	start={new Date()}
+	end={new Date(2022,1,1)}
 	bind:formattedSelected
 	bind:dateChosen
 	format={date => dayjs(date).format('YYYY-MM-DD')}>
