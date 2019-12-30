@@ -19,7 +19,7 @@ export async function get(req, res, next) {
 		}
 		let offer_obj = await redis.get(`offer:${date_sf_ids[i]}`)
 		offer_details.push(JSON.parse(offer_obj));
-		offer_details[offer_details.length - 1].price_incl_surcharge = date_offers[date_sf_ids[i]];
+		offer_details[offer_details.length - 1].price_incl_surcharge = Number(date_offers[date_sf_ids[i]]);
 		let capacity = await redis.smembers(`capacity:${date_sf_ids[i]}`)
 		offer_details[offer_details.length - 1].capacities = capacity;
 	}
