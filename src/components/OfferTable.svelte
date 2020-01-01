@@ -11,6 +11,7 @@
 	}
 	table {
     border-collapse: collapse;
+		margin-top: 10px;
 	}
 </style>
 
@@ -41,12 +42,10 @@
 			{r.id_salesforce_external}
 		</td>
 		<td>
-			{r.price_incl_surcharge}
+			A${r.price_incl_surcharge} ({(r.price_incl_surcharge / r.lowest_price_package.number_of_nights).toFixed(0)}/night)
 		</td>
 		<td>
-			{r.lowest_price_package.number_of_nights}<br>
-			Check-in {dayjs(date).format("ddd DD-MM-YYYY")}<br>
-			Check-out {dayjs(date).add(r.lowest_price_package.number_of_nights, "day").format("ddd DD-MM-YYYY")}
+			{r.lowest_price_package.number_of_nights}🌒, ✓ {dayjs(date).format("ddd DD-MM-YYYY")}, ✈️  {dayjs(date).add(r.lowest_price_package.number_of_nights, "day").format("ddd DD-MM-YYYY")}
 		</td>
 		<td>
 			{r.location}

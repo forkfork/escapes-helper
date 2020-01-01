@@ -1,15 +1,16 @@
 module.exports = {
-  apps : [{
+  apps : [/*{
     name        : "pull-offers",
     script      : "./pull-offers.js",
     cron_restart: "0 * * * *",
     watch       : false,
     autorestart: false
   },
+	*/
   {
     name        : "escapes-helper",
     script      : "npm",
-    args        : "start",
+    args        : "run dev",
     watch       : true,
     env: {
       "NODE_ENV": "development",
