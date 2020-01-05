@@ -2,7 +2,15 @@ import redis from '../../../services/redis';
 
 export async function get(req, res, next) {
   const { date } = req.params;
-	const { near } = req.query;
+	const { near, price } = req.query;
+
+	let fitsPrice = function(price_incl_surcharge) {
+	  console.log("price is", price, "prince_incl_surcharge", price_incl_surcharge);
+		if (price && price != 'undefined') {
+		  return true;
+		}
+		return true;
+	}
 
 	let nearby;
 	console.log("near is", req.query);
@@ -18,8 +26,12 @@ export async function get(req, res, next) {
 			continue;
 		}
 		let offer_obj = await redis.get(`offer:${date_sf_ids[i]}`)
+		let price_incl_surcharge = Number(date_offers[date_sf_ids[i]]);
+		if (!fitsPrice(price_incl_surcharge)) {
+		  continue;
+		}
 		offer_details.push(JSON.parse(offer_obj));
-		offer_details[offer_details.length - 1].price_incl_surcharge = Number(date_offers[date_sf_ids[i]]);
+		offer_details[offer_details.length - 1].price_incl_surcharge = price_incl_surcharge;
 		let capacity = await redis.smembers(`capacity:${date_sf_ids[i]}`)
 		offer_details[offer_details.length - 1].capacities = capacity;
 	}

@@ -1,27 +1,29 @@
 <script context="module">
   export async function preload({ params, query }) {
-    console.log("fetching", `http://127.0.0.1:3000/api/offer-assist/${params.date}?near=${query.near}`);
-    const res = await this.fetch(`http://127.0.0.1:3000/api/offer-assist/${params.date}?near=${query.near}`);
+    const res = await this.fetch(`http://127.0.0.1:3000/api/offer-assist/${params.date}?near=${query.near}&price=${query.price}`);
     const data = await res.json();
 
     console.log(query);
 
-    if (res.status === 200) {
-      return { d: data, date: params.date, loadNearby: query.near || '' };
+   if (res.status === 200) {
+      return { d: data, date: params.date, loadNearby: query.near || '', nightlyrate: query.price };
     } else {
       this.error(res.status, data.message);
     }
   }
 </script>
 
+
 <script>
   import OfferTable from '../components/OfferTable.svelte';
+	import { onMount } from 'svelte';
   import SvelteCalendar from 'svelte-calendar';
   import dayjs from 'dayjs';
   export let d;
   export let date;
   export let nearby;
   export let loadNearby;
+  export let nightlyrate;
   let formattedSelected;
   let dateChosen;
 	function changeUrl(url) {
@@ -29,6 +31,10 @@
 			document.location = url;
 		}
   }
+	function setPrice(price) {
+	  //changeUrl(`/${date}?near=${nearby}&price=${price}`);
+	}
+  //$: if (nightlyrate) { changeUrl("/" + date + "?near=" + nearby + "&price=" + nightlyrate); };
   $: if (nearby && nearby.length == 18) { changeUrl("/" + date + "?near=" + nearby); };
   $: if (dateChosen && formattedSelected) { changeUrl("/" + formattedSelected + "?near=" + nearby); };
 </script>
@@ -58,6 +64,16 @@
     cursor: pointer;
     border-radius: 2px;
   }
+  .custom-input {
+    display: inline-block;
+    background: rgb(0, 255, 120);
+    color: #000;
+    border: 1px solid rgb(0, 255, 100);
+    text-align: center;
+    padding: 15px 30px;
+    cursor: pointer;
+    border-radius: 2px;
+  }
 </style>
 
 <svelte:head>
@@ -77,7 +93,20 @@
     Change check-in from {date}
   </button>
 </SvelteCalendar>
-<input type=text class='custom-button' placeholder='near salesforce id' bind:value={nearby} />
+<input type=text class='custom-input' placeholder='near salesforce id' bind:value={nearby} />
+<label>
+	<input type=radio name="price" on:change={(e) => setPrice(e.target.value)} value="cheap" />
+	Under $200
+</label>
+<label>
+	<input type=radio name="price" on:change={(e) => setPrice(e.target.value)} value="alright" />
+	$200 to $400
+</label>
+<label>
+	<input type=radio name="price" on:change={(e) => setPrice(e.target.value)} value="pricey" />
+	Over $400
+</label>
+
 
 <OfferTable {date} {d}>
 </OfferTable>
