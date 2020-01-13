@@ -30,6 +30,19 @@
   export let nightlyrate;
   let formattedSelected;
   let dateChosen;
+	async function refetch(newDate) {
+		console.log("date ", date);
+    const res = await fetch(`/api/offer-assist/${newDate}?near=${loadNearby}`);
+    const data = await res.json();
+		console.log("data is ", data);
+
+   if (res.status === 200) {
+		  d = data;
+		  date = newDate;
+    } else {
+      this.error(res.status, data.message);
+    }
+  }
 	function changeUrl(url) {
 	  if (typeof(document) != 'undefined') {
 			document.location = url;
@@ -39,8 +52,10 @@
 	  //changeUrl(`/${date}?near=${nearby}&price=${price}`);
 	}
   //$: if (nightlyrate) { changeUrl("/" + date + "?near=" + nearby + "&price=" + nightlyrate); };
-  $: if (nearby && nearby.length == 18) { changeUrl("/" + date + "?near=" + nearby); };
-  $: if (dateChosen && formattedSelected) { changeUrl("/" + formattedSelected + "?near=" + nearby); };
+  //$: if (nearby && nearby.length == 18) { changeUrl("/" + date + "?near=" + nearby); };
+  //$: if (dateChosen && formattedSelected) { changeUrl("/" + formattedSelected + "?near=" + nearby); };
+  $: if (dateChosen && formattedSelected) { refetch(formattedSelected) };
+  
 </script>
 
 <style>
@@ -97,7 +112,7 @@
     Change check-in from {date}
   </button>
 </SvelteCalendar>
-<input type=text class='custom-input' placeholder='near salesforce id' bind:value={nearby} />
+<br>
 <select on:change={(e) => adults = e.target.value}>
 	<option value=empty>Select Adults (2A)</option>
 	<option value=3A>3A</option>
