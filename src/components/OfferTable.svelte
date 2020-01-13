@@ -6,6 +6,7 @@
 	export let adults;
 	export let children;
 	export let infants;
+	export let location;
 </script>
 
 <style>
@@ -53,7 +54,8 @@
 				( adults == "empty" || r.capacities.join("").indexOf(adults) != -1) &&
 				( children == "empty" || r.capacities.join("").indexOf(children) != -1) &&
 				( infants == "empty" || r.capacities.join("").indexOf(infants) != -1)
-				)
+				) &&
+				(location == "empty" || ((r.locations)||[]).indexOf(location) != -1)
 			}
 			<tr>
 				<td>

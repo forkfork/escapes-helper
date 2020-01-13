@@ -26,6 +26,7 @@
   export let adults = "empty";
   export let children = "empty";
   export let infants = "empty";
+  export let location = "empty";
   export let loadNearby;
   export let nightlyrate;
   let formattedSelected;
@@ -51,6 +52,49 @@
 	function setPrice(price) {
 	  //changeUrl(`/${date}?near=${nearby}&price=${price}`);
 	}
+	export let locations = [
+      "Asia",
+      "Europe",
+      "Australia",
+      "Bali",
+      "Indonesia",
+      "Italy",
+      "New South Wales",
+      "Queensland",
+      "South Pacific",
+      "France",
+      "Greece",
+      "Ireland",
+      "Malaysia",
+      "Maldives",
+      "Thailand",
+      "ACT",
+      "Bhutan",
+      "Caribbean",
+      "Dubai",
+      "Egypt",
+      "Fiji",
+      "Germany",
+      "Gold Coast",
+      "Japan",
+      "Khao Lak",
+      "Middle East",
+      "Nepal",
+      "New Zealand",
+      "Phuket",
+      "Rest of the world",
+      "Russia",
+      "Slovenia",
+      "South Africa",
+      "South Australia",
+      "Spain",
+      "Sri Lanka",
+      "Tasmania",
+      "Turkey",
+      "USA",
+      "United Kingdom",
+      "Vanuatu",
+			"Vietnam"];
   //$: if (nightlyrate) { changeUrl("/" + date + "?near=" + nearby + "&price=" + nightlyrate); };
   //$: if (nearby && nearby.length == 18) { changeUrl("/" + date + "?near=" + nearby); };
   //$: if (dateChosen && formattedSelected) { changeUrl("/" + formattedSelected + "?near=" + nearby); };
@@ -123,11 +167,13 @@
 	<option value=empty>Select Children (0C)</option>
 	<option value=1C>1C</option>
 	<option value=2C>2C</option>
+	<option value=3C>3C</option>
 </select>
 <select on:change={(e) => infants = e.target.value}>
 	<option value=empty>Select Infants (0I)</option>
 	<option value=1I>1I</option>
 	<option value=2I>2I</option>
+	<option value=3I>3I</option>
 </select>
 <select on:change={(e) => priceRange = e.target.value}>
 	<option value=empty>Select Price</option>
@@ -139,5 +185,11 @@
 	<option value=5000>$4000 - $4999</option>
 	<option value=expensive>$5000+</option>
 </select>
-<OfferTable {date} {d} {priceRange} {adults} {children} {infants}>
+<select on:change={(e) => location = e.target.value}>
+	<option value=empty>Select Location</option>
+	{#each locations as r, i}
+	<option value={r}>{r}</option>
+	{/each}
+</select>
+<OfferTable {date} {d} {priceRange} {adults} {children} {infants} {location}>
 </OfferTable>
