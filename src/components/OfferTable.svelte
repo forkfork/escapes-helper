@@ -50,10 +50,12 @@
 				(priceRange == "5000" && r.price_incl_surcharge >= 4000 && r.price_incl_surcharge < 5000) || 
 				(priceRange == "expensive") 
 			) &&
-				(
+				((
 				( adults == "empty" || r.capacities.join("").indexOf(adults) != -1) &&
 				( children == "empty" || r.capacities.join("").indexOf(children) != -1) &&
 				( infants == "empty" || r.capacities.join("").indexOf(infants) != -1)
+				) || 
+				adults == 
 				) &&
 				(location == "empty" || ((r.locations)||[]).indexOf(location) != -1)
 			}
@@ -62,7 +64,7 @@
 					{r.location}
 				</td>
 				<td>
-					<a href="https://luxuryescapes.com/au/offer/{r.slug}/{r.id_salesforce_external}">
+					<a target="_blank" href="https://luxuryescapes.com/au/offer/{r.slug}/{r.id_salesforce_external}">
 						{r.name}
 					</a><br>
 					{r.id_salesforce_external}
