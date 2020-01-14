@@ -50,12 +50,10 @@
 				(priceRange == "5000" && r.price_incl_surcharge >= 4000 && r.price_incl_surcharge < 5000) || 
 				(priceRange == "expensive") 
 			) &&
-				((
+				(
 				( adults == "empty" || r.capacities.join("").indexOf(adults) != -1) &&
 				( children == "empty" || r.capacities.join("").indexOf(children) != -1) &&
 				( infants == "empty" || r.capacities.join("").indexOf(infants) != -1)
-				) || 
-				adults == 
 				) &&
 				(location == "empty" || ((r.locations)||[]).indexOf(location) != -1)
 			}
