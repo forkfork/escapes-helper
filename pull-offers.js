@@ -2,6 +2,8 @@ const fetch = require("node-fetch");
 const Redis = require("ioredis");
 
 var redis = new Redis();
+redis.select("1");
+redis.flushdb();
 
 async function day_crawl(sf_id, pkg_id) {
 	// set redis keys as
