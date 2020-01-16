@@ -7,6 +7,7 @@
 	export let children;
 	export let infants;
 	export let location;
+	export let holiday_type;
 </script>
 
 <style>
@@ -55,7 +56,8 @@
 				( children == "empty" || r.capacities.join("").indexOf(children) != -1) &&
 				( infants == "empty" || r.capacities.join("").indexOf(infants) != -1)
 				) &&
-				(location == "empty" || ((r.locations)||[]).indexOf(location) != -1)
+				(location == "empty" || ((r.locations)||[]).indexOf(location) != -1) &&
+				(holiday_type == "empty" || ((r.holiday_types)||[]).indexOf(holiday_type) != -1)
 			}
 			<tr>
 				<td>

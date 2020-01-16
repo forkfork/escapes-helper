@@ -14,7 +14,7 @@
 
 <script>
   import OfferTable from '../components/OfferTable.svelte';
-	import { onMount } from 'svelte';
+  import { onMount } from 'svelte';
   import SvelteCalendar from 'svelte-calendar';
   import dayjs from 'dayjs';
   export let d;
@@ -24,20 +24,21 @@
   export let children = "empty";
   export let infants = "empty";
   export let location = "empty";
+  export let holiday_type = "empty";
   let formattedSelected;
   let dateChosen;
-	async function refetch(newDate) {
+  async function refetch(newDate) {
     const res = await fetch(`/api/offer-assist/${newDate}`);
     const data = await res.json();
 
    if (res.status === 200) {
-		  d = data;
-		  date = newDate;
+      d = data;
+      date = newDate;
     } else {
       this.error(res.status, data.message);
     }
   }
-	export let locations = [
+  export let locations = [
       "Asia",
       "Europe",
       "Australia",
@@ -66,9 +67,11 @@
       "Middle East",
       "Nepal",
       "New Zealand",
+		  "Philippines",
       "Phuket",
       "Rest of the world",
       "Russia",
+      "Singapore",
       "Slovenia",
       "South Africa",
       "South Australia",
@@ -79,7 +82,28 @@
       "USA",
       "United Kingdom",
       "Vanuatu",
-			"Vietnam"];
+      "Vietnam"];
+  export let holiday_types = [
+			"Adults-only",
+			"All-inclusive",
+			"Boutique",
+			"City break",
+			"Cruises",
+			"Family friendly",
+			"Group",
+			"Homes & Villas",
+			"Honeymoon",
+			"Party vibe",
+			"Relaxed",
+			"Romantic",
+			"Short Stay",
+			"Spa break",
+			"Sun & Beach",
+			"Sustainable Travel",
+			"Tours",
+			"Tours and cruises",
+			"Tours by Luxury Escapes",
+			"Villa"];
   $: if (dateChosen && formattedSelected) { refetch(formattedSelected) };
   
 </script>
@@ -140,38 +164,44 @@
 </SvelteCalendar>
 <br>
 <select on:change={(e) => adults = e.target.value}>
-	<option value=empty>Select Adults (2A)</option>
-	<option value=3A>3A</option>
-	<option value=4A>4A</option>
-	<option value=5A>5A</option>
+  <option value=empty>Select Adults (2A)</option>
+  <option value=3A>3A</option>
+  <option value=4A>4A</option>
+  <option value=5A>5A</option>
 </select>
 <select on:change={(e) => children = e.target.value}>
-	<option value=empty>Select Children (0C)</option>
-	<option value=1C>1C</option>
-	<option value=2C>2C</option>
-	<option value=3C>3C</option>
+  <option value=empty>Select Children (0C)</option>
+  <option value=1C>1C</option>
+  <option value=2C>2C</option>
+  <option value=3C>3C</option>
 </select>
 <select on:change={(e) => infants = e.target.value}>
-	<option value=empty>Select Infants (0I)</option>
-	<option value=1I>1I</option>
-	<option value=2I>2I</option>
-	<option value=3I>3I</option>
+  <option value=empty>Select Infants (0I)</option>
+  <option value=1I>1I</option>
+  <option value=2I>2I</option>
+  <option value=3I>3I</option>
 </select>
 <select on:change={(e) => priceRange = e.target.value}>
-	<option value=empty>Select Price</option>
-	<option value=500>$0 - $499</option>
-	<option value=1000>$500 - $999</option>
-	<option value=2000>$1000 - $1999</option>
-	<option value=3000>$2000 - $2999</option>
-	<option value=4000>$3000 - $3999</option>
-	<option value=5000>$4000 - $4999</option>
-	<option value=expensive>$5000+</option>
+  <option value=empty>Select Price</option>
+  <option value=500>$0 - $499</option>
+  <option value=1000>$500 - $999</option>
+  <option value=2000>$1000 - $1999</option>
+  <option value=3000>$2000 - $2999</option>
+  <option value=4000>$3000 - $3999</option>
+  <option value=5000>$4000 - $4999</option>
+  <option value=expensive>$5000+</option>
 </select>
 <select on:change={(e) => location = e.target.value}>
-	<option value=empty>Select Location</option>
-	{#each locations as r, i}
-	<option value={r}>{r}</option>
-	{/each}
+  <option value=empty>Select Location</option>
+  {#each locations as r, i}
+  <option value={r}>{r}</option>
+  {/each}
 </select>
-<OfferTable {date} {d} {priceRange} {adults} {children} {infants} {location}>
+<select on:change={(e) => holiday_type = e.target.value}>
+  <option value=empty>Select Holiday Type</option>
+  {#each holiday_types as r, i}
+  <option value={r}>{r}</option>
+  {/each}
+</select>
+<OfferTable {date} {d} {priceRange} {adults} {children} {infants} {location} {holiday_type}>
 </OfferTable>
