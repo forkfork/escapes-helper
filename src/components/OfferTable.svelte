@@ -8,6 +8,7 @@
 	export let infants;
 	export let location;
 	export let holiday_type;
+	export let number_of_nights;
 </script>
 
 <style>
@@ -57,7 +58,8 @@
 				( infants == "empty" || r.capacities.join("").indexOf(infants) != -1)
 				) &&
 				(location == "empty" || ((r.locations)||[]).indexOf(location) != -1) &&
-				(holiday_type == "empty" || ((r.holiday_types)||[]).indexOf(holiday_type) != -1)
+				(holiday_type == "empty" || ((r.holiday_types)||[]).indexOf(holiday_type) != -1) &&
+				(number_of_nights == "empty" || r.lowest_price_package.number_of_nights == number_of_nights)
 			}
 			<tr>
 				<td>
