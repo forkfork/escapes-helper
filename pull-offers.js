@@ -46,6 +46,7 @@ function shrink_offer(offer) {
 		slug: offer.slug,
 		location: offer.location,
 		locations: offer.locations,
+		holiday_types: offer.holiday_types,
 		lowest_price_package: {
 		  id_salesforce_external: offer.lowest_price_package.id_salesforce_external,
 		  number_of_nights: offer.lowest_price_package.number_of_nights,

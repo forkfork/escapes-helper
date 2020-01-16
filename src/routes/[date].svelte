@@ -1,12 +1,10 @@
 <script context="module">
   export async function preload({ params, query }) {
-    const res = await this.fetch(`http://127.0.0.1:3000/api/offer-assist/${params.date}?near=${query.near}&price=${query.price}`);
+    const res = await this.fetch(`http://127.0.0.1:3000/api/offer-assist/${params.date}`);
     const data = await res.json();
 
-    console.log(query);
-
    if (res.status === 200) {
-      return { d: data, date: params.date, loadNearby: query.near || '', nightlyrate: query.price };
+      return { d: data, date: params.date };
     } else {
       this.error(res.status, data.message);
     }
@@ -21,21 +19,16 @@
   import dayjs from 'dayjs';
   export let d;
   export let date;
-  export let nearby;
   export let priceRange = "empty";
   export let adults = "empty";
   export let children = "empty";
   export let infants = "empty";
   export let location = "empty";
-  export let loadNearby;
-  export let nightlyrate;
   let formattedSelected;
   let dateChosen;
 	async function refetch(newDate) {
-		console.log("date ", date);
-    const res = await fetch(`/api/offer-assist/${newDate}?near=${loadNearby}`);
+    const res = await fetch(`/api/offer-assist/${newDate}`);
     const data = await res.json();
-		console.log("data is ", data);
 
    if (res.status === 200) {
 		  d = data;
@@ -44,14 +37,6 @@
       this.error(res.status, data.message);
     }
   }
-	function changeUrl(url) {
-	  if (typeof(document) != 'undefined') {
-			document.location = url;
-		}
-  }
-	function setPrice(price) {
-	  //changeUrl(`/${date}?near=${nearby}&price=${price}`);
-	}
 	export let locations = [
       "Asia",
       "Europe",
@@ -95,9 +80,6 @@
       "United Kingdom",
       "Vanuatu",
 			"Vietnam"];
-  //$: if (nightlyrate) { changeUrl("/" + date + "?near=" + nearby + "&price=" + nightlyrate); };
-  //$: if (nearby && nearby.length == 18) { changeUrl("/" + date + "?near=" + nearby); };
-  //$: if (dateChosen && formattedSelected) { changeUrl("/" + formattedSelected + "?near=" + nearby); };
   $: if (dateChosen && formattedSelected) { refetch(formattedSelected) };
   
 </script>
