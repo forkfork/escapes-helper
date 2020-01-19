@@ -143,7 +143,9 @@ async function crawl() {
 		await day_crawl(sf_id, pkg_id);
 		await capacity_crawl(sf_id, pkg.fk_property_id, pkg.fk_room_type_id);
 	}
+	console.log("swapping dbs 0 and 1 in redis");
 	await redis.swapdb("0", "1");
+	console.log("DONE!");
 	redis.quit();
 }
 
