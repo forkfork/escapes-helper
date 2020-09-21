@@ -51,13 +51,16 @@ AND package.status = 'content-approved';
 	console.log("written " + rows.length + " offers to active_offers");
 }
 
-async function day_crawl(sf_id, pkg_id) {
+async function day_crawl(sf_id, pkg_id, number_of_nights) {
 	// set redis keys as
 	// HSET check_in:2019-12-25 0060I00000eMx0lQAC 1299 0060I00000eNR2yQAG 1799
 	// surcharge + package price for the lowest price package for a particular day
-	const day_url = `https://api.luxgroup.com/api/calendar/days?offer_id=${sf_id}&package_id=${pkg_id}&region=AU&number_of_adults=2&number_of_children=0&number_of_infants=0&number_of_packages=1&brand=luxuryescapes`;
+	const day_url = `https://api.luxgroup.com/api/calendar/days?offer_id=${sf_id}&package_id=${pkg_id}&region=AU&number_of_nights=${number_of_nights}&number_of_adults=2&number_of_children=0&number_of_infants=0&number_of_packages=1&brand=luxuryescapes`;
 	const day_fetched = await fetch(day_url);
 	const days = await day_fetched.json();
+	if (!days.result) {
+		return;
+	}
 	const day_prices = days.result.prices;
 	for (let n=0; n<day_prices.length; n++) {
 		let month_prices = day_prices[n].months;
@@ -140,7 +143,11 @@ async function crawl() {
 		let pkg_id = pkg.id_salesforce_external;
 		redis.set(`offer:${sf_id}`, JSON.stringify(offer));
 		redis.geoadd("geo_offers", property.longitude, property.latitude, sf_id);
-		await day_crawl(sf_id, pkg_id);
+		await day_crawl(sf_id, pkg_id, 8);
+		await day_crawl(sf_id, pkg_id, 7);
+		await day_crawl(sf_id, pkg_id, 5);
+		await day_crawl(sf_id, pkg_id, 3);
+		await day_crawl(sf_id, pkg_id, 2);
 		await capacity_crawl(sf_id, pkg.fk_property_id, pkg.fk_room_type_id);
 	}
 	console.log("swapping dbs 0 and 1 in redis");
